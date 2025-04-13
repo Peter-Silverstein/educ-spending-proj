@@ -1,0 +1,113 @@
+---
+title: "data-management"
+author: "Peter Silverstein"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Libraries
+library(tidyverse)
+library(here)
+```
+
+```{r}
+# Load data
+educ_spending <- read.csv(here("raw-data","k12_educ_realperch.csv")) %>%
+  filter(state != "District of Columbia")
+names(educ_spending) <- sub("^X", "", names(educ_spending))
+
+governor <- read.csv(here("raw-data","governors_ballotpedia.csv")) %>%
+  rename("state" = "X")
+names(governor) <- sub("^X", "", names(governor))
+
+house <- read.csv(here("raw-data","houses_ballotpedia.csv")) %>%
+  rename("state" = "X")
+names(house) <- sub("^X", "", names(house))
+
+senate <- read.csv(here("raw-data","senates_ballotpedia.csv")) %>%
+  rename("state" = "X")
+names(senate) <- sub("^X", "", names(senate))
+```
+
+```{r}
+# Pivot_longer
+educ_longer <- educ_spending %>%
+  pivot_longer(
+    !state,
+    names_to = "year",
+    values_to = "educ_spending"
+  )
+
+governor_longer <- governor %>%
+  pivot_longer(
+    !state,
+    names_to = "year",
+    values_to = "governor"
+  )
+
+house_longer <- house %>%
+  pivot_longer(
+    !state,
+    names_to = "year",
+    values_to = "house"
+  )
+
+senate_longer <- senate %>%
+  pivot_longer(
+    !state,
+    names_to = "year",
+    values_to = "senate"
+  )
+
+# Joining
+data_pre <- educ_longer %>%
+  inner_join(governor_longer,
+             by = c("state", "year")) %>%
+  inner_join(house_longer,
+             by = c("state", "year")) %>%
+  inner_join(senate_longer,
+             by = c("state", "year"))
+
+# Numeric-ify party: -1 = Dem, 0 = split, 1 = Rep (nebraska gets N/A for now)
+data <- data_pre %>%
+  mutate(
+    governor = case_when(
+      governor == "R" ~ -1,
+      governor == "O" ~ 0,
+      governor == "D" ~ 1,
+      TRUE ~ NA
+    ),
+    senate = case_when(
+      senate == "R" ~ -1,
+      senate == "S" ~ 0,
+      senate == "D" ~ 1,
+      TRUE ~ NA
+    ),
+    house = case_when(
+      house == "R" ~ -1,
+      house == "S" ~ 0,
+      house == "D" ~ 1,
+      TRUE ~ NA
+    ),
+  )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
