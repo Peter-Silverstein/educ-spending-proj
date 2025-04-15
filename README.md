@@ -1,7 +1,10 @@
-# psrc-mrp-finalproj
+# STATGR5293 Final Project
+
+Authors: Peter Silverstein and Sam Gartenstein
+
 **TODO**
 
-- Give project name and description
+- Update project name and give description
 
 ### Sources
 
