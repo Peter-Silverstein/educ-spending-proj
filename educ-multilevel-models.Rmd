@@ -24,7 +24,23 @@ merged_data <- merged_data %>%
   )
 ```
 
-# 
+# Visualizations
+```{r}
+percbyyear <- merged_data %>%
+  group_by(Year) %>%
+  summarize(Republican = mean(r_unified_control, na.rm = TRUE),
+            Democrat = mean(d_unified_control, na.rm = TRUE)) %>%
+  pivot_longer(cols = c("Democrat","Republican"),
+               names_to = "Party",
+               values_to = "Percentage")
+control_byyear_plot <- ggplot(data = percbyyear, aes(x = Year, 
+                                                      y = Percentage,
+                                                      color = Party)) + 
+  geom_line() + 
+  scale_color_manual(values = c("Democrat" = "lightblue", "Republican" = "pink"))
+
+control_byyear_plot
+```
 
 # Modeling
 
@@ -44,7 +60,7 @@ print(fit1, digits = 3)
 fit2 <- stan_glmer(log(educ_spending) ~ unified_control +
                      under19_pop_prct + 
                      white_pop_prct + 
-                     Income + 
+                     income_adj + 
                      (1 | State) + 
                      (1 | Year),
                    data = merged_data,
@@ -61,7 +77,7 @@ fit3 <- stan_glmer(log(educ_spending) ~ r_unified_control +
                      d_unified_control + 
                      under19_pop_prct + 
                      white_pop_prct + 
-                     Income + 
+                     income_adj + 
                      (1 | State) + 
                      (1 | Year),
                    data = merged_data,

@@ -76,21 +76,21 @@ data_pre <- educ_longer %>%
 data <- data_pre %>%
   mutate(
     governor = case_when(
-      governor == "R" ~ -1,
+      governor == "R" ~ 1,
       governor == "O" ~ 0,
-      governor == "D" ~ 1,
+      governor == "D" ~ -1,
       TRUE ~ NA
     ),
     senate = case_when(
-      senate == "R" ~ -1,
+      senate == "R" ~ 1,
       senate == "S" ~ 0,
-      senate == "D" ~ 1,
+      senate == "D" ~ -1,
       TRUE ~ NA
     ),
     house = case_when(
-      house == "R" ~ -1,
+      house == "R" ~ 1,
       house == "S" ~ 0,
-      house == "D" ~ 1,
+      house == "D" ~ -1,
       TRUE ~ NA
     ),
   )
