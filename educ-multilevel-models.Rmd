@@ -33,11 +33,18 @@ percbyyear <- merged_data %>%
   pivot_longer(cols = c("Democrat","Republican"),
                names_to = "Party",
                values_to = "Percentage")
+
 control_byyear_plot <- ggplot(data = percbyyear, aes(x = Year, 
                                                       y = Percentage,
                                                       color = Party)) + 
-  geom_line() + 
-  scale_color_manual(values = c("Democrat" = "lightblue", "Republican" = "pink"))
+  geom_line(lwd = 2) + 
+  scale_color_manual(values = c("Democrat" = "blue", "Republican" = "red")) + 
+  theme_minimal() + 
+  labs(title = "Proportion of unified party control of state government per year") + 
+  scale_x_continuous(
+    breaks = c(1997, 2000, 2005, 2010, 2013), 
+    labels = c("1997", "2000", "2005", "2010", "2013")
+  )
 
 control_byyear_plot
 ```
