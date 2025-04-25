@@ -1,0 +1,123 @@
+---
+title: "income-preprocessing"
+author: "Sam Gartenstein"
+date: "2025-04-25"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(tidyr)
+library(dplyr)
+
+```
+
+
+```{r}
+path <- "data/raw-data/income"
+```
+
+
+```{r}
+income_data <- read_csv(file.path(path, "Median Income.csv"))
+head(income_data)
+
+```
+
+### Dropping Row where State is US
+```{r}
+income_data <- income_data %>%
+  filter(State != "United States")
+
+income_data
+```
+
+
+
+```{r}
+# Create a named vector: names are full state names, values are abbreviations
+state_abbreviations <- setNames(state.abb, state.name)
+
+# Add abbreviation for "District of Columbia" 
+state_abbreviations["District of Columbia"] <- "DC"
+
+income_data <- income_data %>%
+  mutate(State = state_abbreviations[State])
+
+income_data
+```
+
+### Averaging 2013
+
+Since there are two values for 2013, I will take the average 
+
+```{r}
+income_data <- income_data %>%
+  mutate(`2013` = (`2013 (39)` + `2013 (38)`) / 2)
+
+income_data
+```
+
+```{r}
+income_data <- income_data %>%
+  select(-`2013 (39)`, -`2013 (38)`)
+
+income_data
+```
+
+https://tidyselect.r-lib.org/reference/everything.html
+
+```{r}
+income_data <- income_data %>%
+  select(State, `2013`, `2012`, everything())
+
+income_data
+```
+
+### Pivotting Data to Long
+
+https://tidyr.tidyverse.org/reference/pivot_longer.html
+
+```{r}
+
+# Pivot all year columns into long format
+income_long <- income_data %>%
+  pivot_longer(
+    cols = -State,                      
+    names_to = "Year",                 
+    values_to = "Income"                
+  ) %>%
+  mutate(
+    Year = as.integer(Year)            
+  )
+
+income_long
+
+```
+
+
+```{r}
+income_long <- income_long %>%
+  arrange(State, Year)
+
+income_long
+```
+
+
+```{r}
+income_df <- income_long
+income_df
+```
+
+
+```{r}
+write.csv(income_df, "data/processed data/individual/income_df.csv", row.names = FALSE)
+
+```
+
+
+

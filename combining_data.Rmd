@@ -1,0 +1,138 @@
+---
+title: "combining_data"
+author: "Sam Gartenstein"
+date: "2025-04-25"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+path <- "data/processed data/individual"
+```
+
+
+### Demographic
+```{r}
+demographics_df <- read.csv(file.path(path, "demographics_df.csv"))
+demographics_df
+```
+
+### Income
+```{r}
+income_df <- read.csv(file.path(path, "income_df.csv"))
+income_df
+
+```
+
+### Education and Politic Variables
+```{r}
+educ_pol_df <- read.csv(file.path(path, "educ_pol_df.csv"))
+educ_pol_df
+
+```
+
+## Examining Data
+
+### Examining State Abbrevations
+
+This is to ensure all the States are represented 
+
+**Demographics**
+```{r}
+unique(demographics_df$State)
+```
+
+**Income**
+```{r}
+unique(income_df$State)
+```
+
+
+**Education and Politics**
+```{r}
+unique(educ_pol_df$State)
+```
+
+Since DC is not represented in the education and politics variable, we will have to omit DC from demographics and income.
+
+### Examining Years
+
+This is to ensure all years are represented 
+
+**Demographics**
+```{r}
+unique(demographics_df$Year)
+```
+
+**Income**
+```{r}
+unique(income_df$Year)
+```
+
+
+**Education and Politics**
+```{r}
+unique(educ_pol_df$Year)
+```
+
+We need to get rid of 1990 through 1996 and 2014 and beyond in demographics.
+
+### Additional Preprocessing
+
+```{r}
+demographics_df <- demographics_df %>%
+  filter(State != "DC")
+
+income_df <- income_df %>%
+  filter(State != "DC")
+```
+
+**Double Checking DC is Removed**
+
+```{r}
+unique(demographics_df$State)
+```
+
+```{r}
+unique(income_df$State)
+```
+
+### Removing Unecessary Years from Demographics 
+
+```{r}
+demographics_df <- demographics_df %>%
+  filter(!(Year %in% 1990:1996 | Year %in% 2014:2019))
+```
+
+```{r}
+unique(demographics_df$Year)
+
+```
+
+### Merging Dataframes 
+
+```{r}
+merged_df <- demographics_df %>%
+  inner_join(income_df, by = c("State", "Year"))
+
+merged_df
+```
+
+```{r}
+merged_df <- merged_df %>%
+  inner_join(educ_pol_df, by = c("State", "Year"))
+
+merged_df
+```
+
+### Exporting 
+
+```{r}
+write.csv(merged_df, "data/processed data/merged/merged_df.csv", row.names = FALSE)
+
+```
+
+

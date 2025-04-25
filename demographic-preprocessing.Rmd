@@ -1,0 +1,361 @@
+---
+title: "Demographic Variable Preprocessing"
+author: "Sam Gartenstein"
+date: "2025-04-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+```
+
+## Reading Data
+
+```{r}
+path <- "data/raw-data/demographics"
+```
+
+### Age Group Data
+
+```{r}
+agepop_data <- read_csv(file.path(path, "cdc_agepop_estimates_1990_2019.csv"))
+head(agepop_data)
+```
+### Race Data
+
+```{r}
+racepop_data <- read_csv(file.path(path, "cdc_racepop_estimates_1990_2019.csv"))
+head(racepop_data)
+```
+
+### Ethnicity Data
+
+```{r}
+ethpop_data <- read_csv(file.path(path, "cdc_ethpop_estimates_1990_2019.csv"))
+head(ethpop_data)
+```
+
+## Preprocessing Functions
+
+```{r}
+# If the Notes column contains "Total", replace the value in the specified target column
+# For example, "Age Group" has an empty cell for the total (not value), so this gives
+# a label of "Total"
+fill_total_note <- function(df, target_column) {
+  df[[target_column]] <- ifelse(
+    grepl("Total", df$Notes, ignore.case = TRUE),
+    df$Notes,
+    df[[target_column]]
+  )
+  return(df)
+}
+```
+
+
+```{r}
+# Function to drop unecessary variables
+drop_vars <- function(df, vars_to_drop) {
+  df[ , !(names(df) %in% vars_to_drop)]
+}
+```
+
+
+```{r}
+# Function to replace full name with abbreviations using R's built in
+# state.name and state.abb vectors
+# Manually changes District of Columbia to DC
+abbreviate_states <- function(df, column_name = "State") {
+  # Add DC manually
+  full_names <- c(state.name, "District of Columbia")
+  abbreviations <- c(state.abb, "DC")
+  
+  # Replace full state names with abbreviations
+  df[[column_name]] <- ifelse(
+    df[[column_name]] %in% full_names,
+    abbreviations[match(df[[column_name]], full_names)],
+    df[[column_name]]  # Leave unchanged if no match
+  )
+  
+  return(df)
+}
+```
+
+
+```{r}
+# Function to rename "Yearly July 1st Estimates Code" to "Year"
+rename_year_column <- function(df) {
+  names(df)[names(df) == "Yearly July 1st Estimates"] <- "Year"
+  return(df)
+}
+```
+
+https://rlang.r-lib.org/reference/dot-data.html
+
+https://dplyr.tidyverse.org/reference/mutate.html
+
+```{r}
+
+reshape_to_wide <- function(df, names_from_col) {
+  df %>%
+    dplyr::group_by(State, `State Code`, Year, .data[[names_from_col]]) %>%
+    dplyr::summarise(Population = sum(Population, na.rm = TRUE), .groups = "drop") %>%
+    tidyr::pivot_wider(
+      id_cols = c("State", "State Code", "Year"),
+      names_from = all_of(names_from_col),
+      values_from = "Population"
+    ) %>%
+    dplyr::arrange(`State Code`, Year)
+}
+
+```
+
+
+## Preprocessing
+
+### Replacing with Total
+
+**Age Data**
+```{r}
+agepop_data <- fill_total_note(agepop_data, "Age Group")
+head(agepop_data, 25)
+```
+
+**Race Data**
+```{r}
+racepop_data <- fill_total_note(racepop_data, "Race")
+head(racepop_data, 25)
+```
+
+
+**Ethnicity Data**
+```{r}
+ethpop_data <- fill_total_note(ethpop_data, "Ethnicity")
+head(ethpop_data, 25)
+```
+
+
+
+### Dropping Unecessary Columns
+
+**Age Data**
+```{r}
+agepop_data <- drop_vars(agepop_data, c("Notes", "Yearly July 1st Estimates Code", "Age Group Code"))
+head(agepop_data)
+```
+
+
+**Race Data**
+```{r}
+racepop_data <- drop_vars(racepop_data, c("Notes", "Yearly July 1st Estimates Code", "Race Code"))
+head(racepop_data)
+```
+
+**Ethnicity Data**
+```{r}
+ethpop_data <- drop_vars(ethpop_data, c("Notes", "Yearly July 1st Estimates Code", "Ethnicity Code"))
+head(ethpop_data)
+```
+
+
+
+### Renaming State Names to Abbreviations
+
+**Age Data**
+```{r}
+agepop_data <- abbreviate_states(agepop_data, "State")
+head(agepop_data)
+```
+
+**Race Data**
+```{r}
+racepop_data <- abbreviate_states(racepop_data, "State")
+head(racepop_data)
+```
+
+**Ethnicity Data**
+```{r}
+ethpop_data <- abbreviate_states(ethpop_data, "State")
+head(ethpop_data)
+```
+
+### Year 
+
+**Age Data**
+```{r}
+agepop_data <- rename_year_column(agepop_data)
+head(agepop_data, 25)
+```
+
+**Race Data**
+```{r}
+racepop_data <- rename_year_column(racepop_data)
+head(racepop_data)
+```
+
+**Ethnicity Data**
+```{r}
+ethpop_data <- rename_year_column(ethpop_data)
+head(ethpop_data)
+```
+
+```{r}
+colnames(agepop_data)
+```
+
+
+### Reshaping Data
+
+**Age**
+```{r}
+agepop_wide <- reshape_to_wide(agepop_data, "Age Group")
+head(agepop_wide)
+```
+
+**Race**
+```{r}
+racepop_wide <- reshape_to_wide(racepop_data, "Race")
+head(racepop_wide)
+```
+
+
+```{r}
+racepop_wide
+```
+
+### Dropping Columns 
+
+**Age**
+```{r}
+
+cols_to_drop <- c(
+  "20-24 years", "25-29 years", "30-34 years", "35-39 years", "40-44 years",
+  "45-49 years", "50-54 years", "55-59 years", "60-64 years", "65-69 years",
+  "70-74 years", "75-79 years", "80-84 years", "85+ years", 
+  "Show Totals: True", "NA"
+)
+
+agepop_wide <- agepop_wide %>%
+  dplyr::select(-any_of(cols_to_drop)) %>%
+  tidyr::drop_na()
+
+agepop_wide
+
+```
+
+**Race**
+```{r}
+cols_to_drop <- c(
+  "American Indian or Alaska Native", "Asian or Pacific Islander", "Black or African American",
+  "Show Totals: True", "NA"
+)
+
+racepop_wide <- racepop_wide %>%
+  dplyr::select(-any_of(cols_to_drop)) %>%
+  tidyr::drop_na()
+
+racepop_wide
+
+```
+
+### Calculating Percentages
+
+**Age**
+
+Calculating number 19 and under
+
+```{r}
+agepop_wide$`19_under` <- rowSums(
+  agepop_wide[, c("< 1 year", "1-4 years", "5-9 years", "10-14 years", "15-19 years")],
+  na.rm = TRUE
+)
+
+agepop_wide
+```
+
+```{r}
+# Calcualting percentage of population under 19
+agepop_wide$under19_pop_prct <- agepop_wide$`19_under` / agepop_wide$Total 
+agepop_wide
+```
+
+
+
+```{r}
+# Dropping remaining ages
+cols_to_drop <- c(
+  "< 1 year", "1-4 years", "5-9 years", 
+  "10-14 years", "15-19 years", "19_under",
+  "Total"
+)
+
+agepop_wide <- agepop_wide %>%
+  dplyr::select(-any_of(cols_to_drop))
+
+agepop_wide
+```
+
+**Race**
+
+Calculating percentage White 
+
+```{r}
+# Calcualting percentage of white population
+racepop_wide$white_pop_prct <- racepop_wide$White / racepop_wide$Total 
+racepop_wide
+
+```
+
+```{r}
+# Dropping uncessary columns 
+
+cols_to_drop <- c(
+  "Total", "White"
+)
+
+racepop_wide <- racepop_wide %>%
+  dplyr::select(-any_of(cols_to_drop)) 
+
+racepop_wide
+
+```
+
+```{r}
+demographics_df <- dplyr::left_join(
+  agepop_wide, 
+  racepop_wide, 
+  by = c("State", "Year")
+)
+
+demographics_df
+```
+
+```{r}
+demographics_df <- demographics_df %>%
+  dplyr::select(-`State Code.x`, -`State Code.y`)
+
+demographics_df
+```
+
+```{r}
+demographics_df <- demographics_df %>%
+  arrange(State, Year)
+
+demographics_df
+
+```
+
+### Exporting Data
+```{r}
+write.csv(demographics_df, "data/processed data/individual/demographics_df.csv", row.names = FALSE)
+
+```
+
+
+
