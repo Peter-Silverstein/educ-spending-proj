@@ -16,19 +16,19 @@ library(here)
 
 ```{r}
 # Load data
-educ_spending <- read.csv(here("raw-data","k12_educ_realperch.csv")) %>%
+educ_spending <- read.csv(here("data/raw-data","k12_educ_realperch.csv")) %>%
   filter(state != "District of Columbia")
 names(educ_spending) <- sub("^X", "", names(educ_spending))
 
-governor <- read.csv(here("raw-data","governors_ballotpedia.csv")) %>%
+governor <- read.csv(here("data/raw-data","governors_ballotpedia.csv")) %>%
   rename("state" = "X")
 names(governor) <- sub("^X", "", names(governor))
 
-house <- read.csv(here("raw-data","houses_ballotpedia.csv")) %>%
+house <- read.csv(here("data/raw-data","houses_ballotpedia.csv")) %>%
   rename("state" = "X")
 names(house) <- sub("^X", "", names(house))
 
-senate <- read.csv(here("raw-data","senates_ballotpedia.csv")) %>%
+senate <- read.csv(here("data/raw-data","senates_ballotpedia.csv")) %>%
   rename("state" = "X")
 names(senate) <- sub("^X", "", names(senate))
 ```
@@ -102,10 +102,8 @@ data
 
 ### Changing state to its abbreviations
 ```{r}
-# Vector of state names and abbreviations
 state_abbreviations <- setNames(state.abb, state.name)
 
-# Assuming your DataFrame is named something like `edu_df`
 data <- data %>%
   # Step 1: Convert state names to abbreviations
   mutate(state = state_abbreviations[state]) 
@@ -119,7 +117,28 @@ names(data)[names(data) == "year"] <- "Year"
 data
 ```
 
+### Sorting
+```{r}
+data <- data %>%
+  arrange(State, Year)
 
+data
+
+```
+
+### Exporting
+
+```{r}
+educ_pol_df <- data
+educ_pol_df
+```
+
+
+```{r}
+
+write.csv(educ_pol_df, "data/processed data/individual/educ_pol_df.csv", row.names = FALSE)
+
+```
 
 
 

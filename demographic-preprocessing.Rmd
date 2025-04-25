@@ -19,7 +19,7 @@ library(purrr)
 ## Reading Data
 
 ```{r}
-path <- "raw-data/demographics"
+path <- "data/raw-data/demographics"
 ```
 
 ### Age Group Data
@@ -342,4 +342,20 @@ demographics_df <- demographics_df %>%
 
 demographics_df
 ```
+
+```{r}
+demographics_df <- demographics_df %>%
+  arrange(State, Year)
+
+demographics_df
+
+```
+
+### Exporting Data
+```{r}
+write.csv(demographics_df, "data/processed data/individual/demographics_df.csv", row.names = FALSE)
+
+```
+
+
 
