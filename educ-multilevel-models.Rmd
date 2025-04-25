@@ -1,0 +1,72 @@
+---
+title: "educ-multilevel-models"
+author: "Peter Silverstein"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(rstanarm)
+
+merged_data <- read_csv("data/processed data/merged/merged_df.csv")
+merged_data <- merged_data %>%
+  mutate(governor = as.numeric(governor),
+         senate = as.numeric(senate),
+         house = as.numeric(house),
+         unified_control = ifelse(abs(governor + senate + house) == 3, 1, 0),
+         r_unified_control = ifelse(governor + senate + house == 3, 1, 0),
+         d_unified_control = ifelse(governor + senate + house == -3, 1, 0)
+  )
+```
+
+# 
+
+# Modeling
+
+```{r}
+# Model 1: Linear Regression of Education Spending on Unified Control
+fit1 <- stan_glm(log(educ_spending) ~ unified_control,
+                   data = merged_data,
+                   refresh = FALSE,
+                   cores = 4)
+
+print(fit1, digits = 3)
+```
+
+```{r}
+# Model 2: Multilevel Regression of Education Spending + Covariates on Unified 
+# Control w/ varying slopes for Time and State
+fit2 <- stan_glmer(log(educ_spending) ~ unified_control +
+                     under19_pop_prct + 
+                     white_pop_prct + 
+                     Income + 
+                     (1 | State) + 
+                     (1 | Year),
+                   data = merged_data,
+                   refresh = FALSE,
+                   cores = 4)
+
+print(fit2, digits = 3)
+```
+
+```{r}
+# Model 3: Multilevel Regression of Education Spending + Covariates on Unified 
+# Party Control w/ varying slopes for Time and State
+fit3 <- stan_glmer(log(educ_spending) ~ r_unified_control + 
+                     d_unified_control + 
+                     under19_pop_prct + 
+                     white_pop_prct + 
+                     Income + 
+                     (1 | State) + 
+                     (1 | Year),
+                   data = merged_data,
+                   refresh = FALSE,
+                   cores = 4)
+
+print(fit3, digits = 3)
+```
