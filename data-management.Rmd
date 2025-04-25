@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Libraries
 library(tidyverse)
+library(dplyr)
 library(here)
 ```
 
@@ -95,8 +96,28 @@ data <- data_pre %>%
   )
 ```
 
+```{r}
+data
+```
 
+### Changing state to its abbreviations
+```{r}
+# Vector of state names and abbreviations
+state_abbreviations <- setNames(state.abb, state.name)
 
+# Assuming your DataFrame is named something like `edu_df`
+data <- data %>%
+  # Step 1: Convert state names to abbreviations
+  mutate(state = state_abbreviations[state]) 
+
+data
+```
+
+```{r}
+names(data)[names(data) == "state"] <- "State"
+names(data)[names(data) == "year"] <- "Year"
+data
+```
 
 
 
