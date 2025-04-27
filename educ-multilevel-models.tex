@@ -1,0 +1,620 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{float}
+\usepackage{tabularray}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{rotating}
+\UseTblrLibrary{siunitx}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={educ-multilevel-models},
+  pdfauthor={Peter Silverstein},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{educ-multilevel-models}
+\author{Peter Silverstein}
+\date{2025-04-27}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#install.packages("tinytex")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.4
+## v forcats   1.0.0     v stringr   1.5.0
+## v ggplot2   3.5.1     v tibble    3.2.1
+## v lubridate 1.9.3     v tidyr     1.3.1
+## v purrr     1.0.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(rstanarm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: Rcpp
+## This is rstanarm version 2.32.1
+## - See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+## - Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+## - For execution on a local, multicore CPU with excess RAM we recommend calling
+##   options(mc.cores = parallel::detectCores())
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(modelsummary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'modelsummary' was built under R version 4.3.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{merged\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/processed data/merged/merged\_df.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 850 Columns: 10
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): State
+## dbl (9): Year, under19_pop_prct, white_pop_prct, Income, income_adj, educ_sp...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{merged\_data }\OtherTok{\textless{}{-}}\NormalTok{ merged\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{governor =} \FunctionTok{as.numeric}\NormalTok{(governor),}
+         \AttributeTok{senate =} \FunctionTok{as.numeric}\NormalTok{(senate),}
+         \AttributeTok{house =} \FunctionTok{as.numeric}\NormalTok{(house),}
+         \AttributeTok{unified\_control =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{abs}\NormalTok{(governor }\SpecialCharTok{+}\NormalTok{ senate }\SpecialCharTok{+}\NormalTok{ house) }\SpecialCharTok{==} \DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+         \AttributeTok{r\_unified\_control =} \FunctionTok{ifelse}\NormalTok{(governor }\SpecialCharTok{+}\NormalTok{ senate }\SpecialCharTok{+}\NormalTok{ house }\SpecialCharTok{==} \DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+         \AttributeTok{d\_unified\_control =} \FunctionTok{ifelse}\NormalTok{(governor }\SpecialCharTok{+}\NormalTok{ senate }\SpecialCharTok{+}\NormalTok{ house }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{visualizations}{%
+\section{Visualizations}\label{visualizations}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{percbyyear }\OtherTok{\textless{}{-}}\NormalTok{ merged\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Year) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{Republican =} \FunctionTok{mean}\NormalTok{(r\_unified\_control, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+            \AttributeTok{Democrat =} \FunctionTok{mean}\NormalTok{(d\_unified\_control, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Democrat"}\NormalTok{,}\StringTok{"Republican"}\NormalTok{),}
+               \AttributeTok{names\_to =} \StringTok{"Party"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"Percentage"}\NormalTok{)}
+
+\NormalTok{control\_byyear\_plot }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ percbyyear, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }
+                                                      \AttributeTok{y =}\NormalTok{ Percentage,}
+                                                      \AttributeTok{color =}\NormalTok{ Party)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{lwd =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Democrat"} \OtherTok{=} \StringTok{"blue"}\NormalTok{, }\StringTok{"Republican"} \OtherTok{=} \StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+} 
+  \CommentTok{\#theme\_minimal() + }
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Figure 1: Proportion of Unified Party Control of State Government Per year"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}
+    \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{1997}\NormalTok{, }\DecValTok{2001}\NormalTok{, }\DecValTok{2005}\NormalTok{, }\DecValTok{2009}\NormalTok{, }\DecValTok{2013}\NormalTok{), }
+    \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1997"}\NormalTok{, }\StringTok{"2001"}\NormalTok{, }\StringTok{"2005"}\NormalTok{, }\StringTok{"2009"}\NormalTok{, }\StringTok{"2013"}\NormalTok{)}
+\NormalTok{  )}
+
+\NormalTok{control\_byyear\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{educ-multilevel-models_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggsave("figures/Figure\_1.png", }
+\CommentTok{\#       plot = control\_byyear\_plot, }
+\CommentTok{\#       width = 8, height = 6)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{summary-statistics}{%
+\subsection{Summary Statistics}\label{summary-statistics}}
+
+\hypertarget{dimension}{%
+\subsubsection{Dimension}\label{dimension}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(merged\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 850  13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean\_educ\_spending\_by\_year }\OtherTok{\textless{}{-}}\NormalTok{ merged\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(State }\SpecialCharTok{!=} \StringTok{"NE"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}          
+  \FunctionTok{group\_by}\NormalTok{(Year) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{mean\_educ\_spending =} \FunctionTok{mean}\NormalTok{(educ\_spending, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{()}
+
+\NormalTok{mean\_educ\_spending\_by\_year}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 17 x 2
+##     Year mean_educ_spending
+##    <dbl>              <dbl>
+##  1  1997              4833.
+##  2  1998              5037.
+##  3  1999              5252.
+##  4  2000              5447.
+##  5  2001              5612.
+##  6  2002              5811.
+##  7  2003              6010.
+##  8  2004              6166.
+##  9  2005              6297.
+## 10  2006              6436.
+## 11  2007              6629.
+## 12  2008              6865.
+## 13  2009              7044.
+## 14  2010              7093.
+## 15  2011              7002.
+## 16  2012              6903.
+## 17  2013              6918.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Figure\_2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(mean\_educ\_spending\_by\_year, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y =}\NormalTok{ mean\_educ\_spending)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"blue"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"blue"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Figure 2: Mean Education Spending by Year (2016 USD)"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Year"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Mean Education Spending"}\NormalTok{,}
+\NormalTok{  )}
+
+\NormalTok{Figure\_2}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{educ-multilevel-models_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggsave("figures/Figure\_2.png", }
+\CommentTok{\#       plot = Figure\_2, }
+\CommentTok{\#       width = 8, height = 6)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{mean-education-spending-by-state}{%
+\subsubsection{Mean Education Spending by
+State}\label{mean-education-spending-by-state}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean\_educ\_spending\_by\_state }\OtherTok{\textless{}{-}}\NormalTok{ merged\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(State) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}
+    \AttributeTok{mean\_educ\_spending =} \FunctionTok{mean}\NormalTok{(educ\_spending, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{mean\_r\_unified\_control =} \FunctionTok{mean}\NormalTok{(r\_unified\_control, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(mean\_educ\_spending), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(mean\_r\_unified\_control)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =} \FunctionTok{reorder}\NormalTok{(State, }\SpecialCharTok{{-}}\NormalTok{mean\_educ\_spending)) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{ungroup}\NormalTok{()}
+
+\NormalTok{mean\_educ\_spending\_by\_state}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 49 x 3
+##    State mean_educ_spending mean_r_unified_control
+##    <fct>              <dbl>                  <dbl>
+##  1 AK                 9401.                  0.294
+##  2 AL                 5191.                  0.176
+##  3 AR                 5284.                  0    
+##  4 AZ                 4280.                  0.529
+##  5 CA                 5897.                  0    
+##  6 CO                 5389.                  0.235
+##  7 CT                 8461.                  0    
+##  8 DE                 6893.                  0    
+##  9 FL                 5267.                  0.824
+## 10 GA                 5788.                  0.529
+## # i 39 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Figure\_3 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(mean\_educ\_spending\_by\_state, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ State, }\AttributeTok{y =}\NormalTok{ mean\_educ\_spending)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{fill =} \StringTok{"blue"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Figure 3: Mean Education Spending Per Pupil by State (2016 USD) "}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"State"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Mean Education Spending Per Pupul"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+
+\NormalTok{Figure\_3}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{educ-multilevel-models_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggsave("figures/Figure\_3.png", }
+\CommentTok{\#       plot = Figure\_3, }
+\CommentTok{\#       width = 8, height = 6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Figure\_4 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(mean\_educ\_spending\_by\_state, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ mean\_r\_unified\_control, }\AttributeTok{y =}\NormalTok{ mean\_educ\_spending, }\AttributeTok{label =}\NormalTok{ State)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Figure 4: Mean Education Spending Per Pupil vs Republican Unified Control by State"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Mean Republican Unified Control"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Mean Education Spending (2016 USD)"}
+\NormalTok{  )}
+
+\NormalTok{Figure\_4}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{educ-multilevel-models_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggsave("figures/Figure\_4.png", }
+\CommentTok{\#       plot = Figure\_4, }
+\CommentTok{\#       width = 8, height = 6)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{modeling}{%
+\section{Modeling}\label{modeling}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model 1: Linear Regression of Education Spending on Unified Control}
+\NormalTok{fit1 }\OtherTok{\textless{}{-}} \FunctionTok{stan\_glm}\NormalTok{(}\FunctionTok{log}\NormalTok{(educ\_spending) }\SpecialCharTok{\textasciitilde{}}\NormalTok{ unified\_control,}
+                   \AttributeTok{data =}\NormalTok{ merged\_data,}
+                   \AttributeTok{refresh =} \ConstantTok{FALSE}\NormalTok{,}
+                   \AttributeTok{cores =} \DecValTok{4}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(fit1, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## stan_glm
+##  family:       gaussian [identity]
+##  formula:      log(educ_spending) ~ unified_control
+##  observations: 833
+##  predictors:   2
+## ------
+##                 Median MAD_SD
+## (Intercept)      8.724  0.011
+## unified_control -0.048  0.017
+## 
+## Auxiliary parameter(s):
+##       Median MAD_SD
+## sigma 0.246  0.006 
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model 2: Multilevel Regression of Education Spending + Covariates on Unified }
+\CommentTok{\# Control w/ varying slopes for Time and State}
+\NormalTok{fit2 }\OtherTok{\textless{}{-}} \FunctionTok{stan\_glmer}\NormalTok{(}\FunctionTok{log}\NormalTok{(educ\_spending) }\SpecialCharTok{\textasciitilde{}}\NormalTok{ unified\_control }\SpecialCharTok{+}
+\NormalTok{                     under19\_pop\_prct }\SpecialCharTok{+} 
+\NormalTok{                     white\_pop\_prct }\SpecialCharTok{+} 
+\NormalTok{                     income\_adj }\SpecialCharTok{+} 
+\NormalTok{                     (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ State) }\SpecialCharTok{+} 
+\NormalTok{                     (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ Year),}
+                   \AttributeTok{data =}\NormalTok{ merged\_data,}
+                   \AttributeTok{refresh =} \ConstantTok{FALSE}\NormalTok{,}
+                   \AttributeTok{cores =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+## Running the chains for more iterations may help. See
+## https://mc-stan.org/misc/warnings.html#bulk-ess
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(fit2, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## stan_glmer
+##  family:       gaussian [identity]
+##  formula:      log(educ_spending) ~ unified_control + under19_pop_prct + white_pop_prct + 
+##     income_adj + (1 | State) + (1 | Year)
+##  observations: 833
+## ------
+##                  Median MAD_SD
+## (Intercept)       9.823  0.217
+## unified_control  -0.012  0.004
+## under19_pop_prct -4.720  0.470
+## white_pop_prct   -0.099  0.191
+## income_adj        0.000  0.000
+## 
+## Auxiliary parameter(s):
+##       Median MAD_SD
+## sigma 0.055  0.001 
+## 
+## Error terms:
+##  Groups   Name        Std.Dev.
+##  State    (Intercept) 0.17189 
+##  Year     (Intercept) 0.08509 
+##  Residual             0.05468 
+## Num. levels: State 49, Year 17 
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model 3: Multilevel Regression of Education Spending + Covariates on Unified }
+\CommentTok{\# Party Control w/ varying slopes for Time and State}
+\NormalTok{fit3 }\OtherTok{\textless{}{-}} \FunctionTok{stan\_glmer}\NormalTok{(}\FunctionTok{log}\NormalTok{(educ\_spending) }\SpecialCharTok{\textasciitilde{}}\NormalTok{ r\_unified\_control }\SpecialCharTok{+} 
+\NormalTok{                     d\_unified\_control }\SpecialCharTok{+} 
+\NormalTok{                     under19\_pop\_prct }\SpecialCharTok{+} 
+\NormalTok{                     white\_pop\_prct }\SpecialCharTok{+} 
+\NormalTok{                     income\_adj }\SpecialCharTok{+} 
+\NormalTok{                     (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ State) }\SpecialCharTok{+} 
+\NormalTok{                     (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ Year),}
+                   \AttributeTok{data =}\NormalTok{ merged\_data,}
+                   \AttributeTok{refresh =} \ConstantTok{FALSE}\NormalTok{,}
+                   \AttributeTok{cores =} \DecValTok{4}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(fit3, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## stan_glmer
+##  family:       gaussian [identity]
+##  formula:      log(educ_spending) ~ r_unified_control + d_unified_control + 
+##     under19_pop_prct + white_pop_prct + income_adj + (1 | State) + 
+##     (1 | Year)
+##  observations: 833
+## ------
+##                   Median MAD_SD
+## (Intercept)        9.841  0.217
+## r_unified_control -0.009  0.006
+## d_unified_control -0.014  0.006
+## under19_pop_prct  -4.757  0.484
+## white_pop_prct    -0.103  0.190
+## income_adj         0.000  0.000
+## 
+## Auxiliary parameter(s):
+##       Median MAD_SD
+## sigma 0.055  0.001 
+## 
+## Error terms:
+##  Groups   Name        Std.Dev.
+##  State    (Intercept) 0.17323 
+##  Year     (Intercept) 0.08515 
+##  Residual             0.05466 
+## Num. levels: State 49, Year 17 
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{modelsummary}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\StringTok{"Model 1"} \OtherTok{=}\NormalTok{ fit1, }\StringTok{"Model 2"} \OtherTok{=}\NormalTok{ fit2, }\StringTok{"Model 3"} \OtherTok{=}\NormalTok{ fit3),}
+  \AttributeTok{output =} \StringTok{"markdown"}   
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: 
+## `modelsummary` uses the `performance` package to extract goodness-of-fit
+## statistics from models of this class. You can specify the statistics you wish
+## to compute by supplying a `metrics` argument to `modelsummary`, which will then
+## push it forward to `performance`. Acceptable values are: "all", "common",
+## "none", or a character vector of metrics names. For example: `modelsummary(mod,
+## metrics = c("RMSE", "R2")` Note that some metrics are computationally
+## expensive. See `?performance::performance` for details.
+##  This warning appears once per session.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: 'xfun::attr()' is deprecated.
+## Use 'xfun::attr2()' instead.
+## See help("Deprecated")
+
+## Warning: 'xfun::attr()' is deprecated.
+## Use 'xfun::attr2()' instead.
+## See help("Deprecated")
+\end{verbatim}
+
+\begin{table}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]},
+column{2,3,4}={}{halign=c,},
+column{1}={}{halign=l,},
+hline{11}={1,2,3,4}{solid, black, 0.05em},
+}                     %% tabularray inner close
+\toprule
+& Model 1 & Model 2 & Model 3 \\ \midrule %% TinyTableHeader
+(Intercept) & 8.724 & 9.823 & 9.841 \\
+unified_control & -0.048 & -0.012 &  \\
+under19_pop_prct &  & -4.720 & -4.757 \\
+white_pop_prct &  & -0.099 & -0.103 \\
+income_adj &  & 0.000 & 0.000 \\
+r_unified_control &  &  & -0.009 \\
+d_unified_control &  &  & -0.014 \\
+Sigma[State × (Intercept),(Intercept)] &  & 0.029 & 0.029 \\
+Sigma[Year × (Intercept),(Intercept)] &  & 0.007 & 0.007 \\
+Num.Obs. & 833 & 833 & 833 \\
+R2 & 0.009 & 0.000 & 0.000 \\
+R2 Adj. & 0.006 & 0.947 & 0.947 \\
+R2 Marg. &  & 0.000 & 0.000 \\
+ICC &  & 0.9 & 0.9 \\
+Log.Lik. & -12.639 & 1270.307 & 1270.555 \\
+ELPD & -15.0 & 1204.6 & 1204.5 \\
+ELPD s.e. & 20.9 & 24.5 & 24.4 \\
+LOOIC & 30.1 & -2409.3 & -2408.9 \\
+LOOIC s.e. & 41.8 & 48.9 & 48.8 \\
+WAIC & 30.0 & -2410.2 & -2410.0 \\
+RMSE & 0.25 & 0.05 & 0.05 \\
+r2.adjusted.marginal &  & 0.946853185806113 & 0.946835682869943 \\
+\bottomrule
+\end{tblr}
+\end{table}
+
+\end{document}
