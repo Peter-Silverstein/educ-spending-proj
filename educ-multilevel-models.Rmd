@@ -17,14 +17,16 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(rstanarm)
-library(modelsummary)
+library(knitr)
+library(kableExtra)
+library(magick)
+library(webshot2)
 
 ```
 
 
 
 ```{r}
-
 merged_data <- read_csv("data/processed data/merged/merged_df.csv")
 merged_data <- merged_data %>%
   mutate(governor = as.numeric(governor),
@@ -179,6 +181,8 @@ Figure_4
 # Modeling
 
 ```{r}
+set.seed(42)
+
 # Model 1: Linear Regression of Education Spending on Unified Control
 fit1 <- stan_glm(log(educ_spending) ~ unified_control,
                    data = merged_data,
@@ -191,6 +195,8 @@ print(fit1, digits = 3)
 
 
 ```{r}
+set.seed(42)
+
 # Model 2: Multilevel Regression of Education Spending + Covariates on Unified 
 # Control w/ varying slopes for Time and State
 fit2 <- stan_glmer(log(educ_spending) ~ unified_control +
@@ -207,6 +213,8 @@ print(fit2, digits = 3)
 ```
 
 ```{r}
+set.seed(42)
+
 # Model 3: Multilevel Regression of Education Spending + Covariates on Unified 
 # Party Control w/ varying slopes for Time and State
 fit3 <- stan_glmer(log(educ_spending) ~ r_unified_control + 
@@ -225,10 +233,32 @@ print(fit3, digits = 3)
 
 ```{r}
 
-modelsummary(
-  list("Model 1" = fit1, "Model 2" = fit2, "Model 3" = fit3),
-  output = "markdown"   
-)
+# fit1_tidy <- tidy(fit1)
+# fit1_tidy_rounded <- fit1_tidy  %>%
+#   mutate(across(where(is.numeric), 
+#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+#   mutate(across(where(~!is.numeric(.)), 
+#                 ~ifelse(is.na(.), "-", as.character(.))))
+# fit1_kable <- knitr::kable(fit1_tidy_rounded, caption = "Model 1 Results") %>% kable_classic()
+# save_kable(fit1_kable, file = "fit1table.png")
+# 
+# fit2_tidy <- tidy(fit2)
+# fit2_tidy_rounded <- fit2_tidy %>%
+#   mutate(across(where(is.numeric), 
+#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+#   mutate(across(where(~!is.numeric(.)), 
+#                 ~ifelse(is.na(.), "-", as.character(.))))
+# fit2_kable <- knitr::kable(fit2_tidy_rounded, caption = "Model 2 Results") %>% kable_classic()
+# save_kable(fit2_kable, file = "fit2table.png")
+# 
+# fit3_tidy <- tidy(fit3)
+# fit3_tidy_rounded <- fit3_tidy %>%
+#   mutate(across(where(is.numeric), 
+#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+#   mutate(across(where(~!is.numeric(.)), 
+#                 ~ifelse(is.na(.), "-", as.character(.))))
+# fit3_kable <- knitr::kable(fit3_tidy_rounded, caption = "Model 3 Results") %>% kable_classic()
+# save_kable(fit3_kable, file = "fit3table.png")
 
 ```
 
