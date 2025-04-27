@@ -10,8 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+#install.packages("tinytex")
+```
+
+
+```{r}
 library(tidyverse)
 library(rstanarm)
+library(modelsummary)
+
+```
+
+
+
+```{r}
 
 merged_data <- read_csv("data/processed data/merged/merged_df.csv")
 merged_data <- merged_data %>%
@@ -39,15 +51,130 @@ control_byyear_plot <- ggplot(data = percbyyear, aes(x = Year,
                                                       color = Party)) + 
   geom_line(lwd = 2) + 
   scale_color_manual(values = c("Democrat" = "blue", "Republican" = "red")) + 
-  theme_minimal() + 
-  labs(title = "Proportion of unified party control of state government per year") + 
+  #theme_minimal() + 
+  labs(title = "Figure 1: Proportion of Unified Party Control of State Government Per year") + 
   scale_x_continuous(
-    breaks = c(1997, 2000, 2005, 2010, 2013), 
-    labels = c("1997", "2000", "2005", "2010", "2013")
+    breaks = c(1997, 2001, 2005, 2009, 2013), 
+    labels = c("1997", "2001", "2005", "2009", "2013")
   )
 
 control_byyear_plot
 ```
+
+```{r}
+
+#ggsave("figures/Figure_1.png", 
+#       plot = control_byyear_plot, 
+#       width = 8, height = 6)
+
+```
+
+
+## Summary Statistics
+
+### Dimension
+```{r}
+dim(merged_data)
+```
+
+
+```{r}
+mean_educ_spending_by_year <- merged_data %>%
+  filter(State != "NE") %>%          
+  group_by(Year) %>%
+  summarize(mean_educ_spending = mean(educ_spending, na.rm = TRUE)) %>%
+  ungroup()
+
+mean_educ_spending_by_year
+```
+
+```{r}
+
+Figure_2 <- ggplot(mean_educ_spending_by_year, aes(x = Year, y = mean_educ_spending)) +
+  geom_line(color = "blue") +
+  geom_point(color = "blue") +
+  labs(
+    title = "Figure 2: Mean Education Spending by Year (2016 USD)",
+    x = "Year",
+    y = "Mean Education Spending",
+  )
+
+Figure_2
+
+```
+
+```{r}
+
+#ggsave("figures/Figure_2.png", 
+#       plot = Figure_2, 
+#       width = 8, height = 6)
+
+```
+
+
+### Mean Education Spending by State 
+
+```{r}
+
+mean_educ_spending_by_state <- merged_data %>%
+  group_by(State) %>%
+  summarize(
+    mean_educ_spending = mean(educ_spending, na.rm = TRUE),
+    mean_r_unified_control = mean(r_unified_control, na.rm = TRUE)
+  ) %>%
+  filter(!is.na(mean_educ_spending), !is.na(mean_r_unified_control)) %>%
+  mutate(State = reorder(State, -mean_educ_spending)) %>%  
+  ungroup()
+
+mean_educ_spending_by_state
+
+```
+
+```{r}
+Figure_3 <- ggplot(mean_educ_spending_by_state, aes(x = State, y = mean_educ_spending)) +
+  geom_col(fill = "blue") +
+  labs(
+    title = "Figure 3: Mean Education Spending Per Pupil by State (2016 USD) ",
+    x = "State",
+    y = "Mean Education Spending Per Pupul"
+  ) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+Figure_3
+
+```
+
+```{r}
+#ggsave("figures/Figure_3.png", 
+#       plot = Figure_3, 
+#       width = 8, height = 6)
+
+```
+
+
+```{r}
+
+Figure_4 <- ggplot(mean_educ_spending_by_state, aes(x = mean_r_unified_control, y = mean_educ_spending, label = State)) +
+  geom_text(color = "black", size = 3) +
+  labs(
+    title = "Figure 4: Mean Education Spending Per Pupil vs Republican Unified Control by State",
+    x = "Mean Republican Unified Control",
+    y = "Mean Education Spending (2016 USD)"
+  )
+
+Figure_4
+
+```
+
+```{r}
+
+#ggsave("figures/Figure_4.png", 
+#       plot = Figure_4, 
+#       width = 8, height = 6)
+
+```
+
+
 
 # Modeling
 
@@ -60,6 +187,8 @@ fit1 <- stan_glm(log(educ_spending) ~ unified_control,
 
 print(fit1, digits = 3)
 ```
+
+
 
 ```{r}
 # Model 2: Multilevel Regression of Education Spending + Covariates on Unified 
@@ -93,3 +222,18 @@ fit3 <- stan_glmer(log(educ_spending) ~ r_unified_control +
 
 print(fit3, digits = 3)
 ```
+
+```{r}
+
+modelsummary(
+  list("Model 1" = fit1, "Model 2" = fit2, "Model 3" = fit3),
+  output = "markdown"   
+)
+
+```
+
+
+
+
+
+
