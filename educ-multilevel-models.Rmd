@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-#install.packages("tinytex")
+install.packages("tinytex")
 ```
 
 
@@ -21,7 +21,7 @@ library(knitr)
 library(kableExtra)
 library(magick)
 library(webshot2)
-
+library(broom.mixed)
 ```
 
 
@@ -203,6 +203,7 @@ fit2 <- stan_glmer(log(educ_spending) ~ unified_control +
                      under19_pop_prct + 
                      white_pop_prct + 
                      income_adj + 
+                     unemployment_rate + 
                      (1 | State) + 
                      (1 | Year),
                    data = merged_data,
@@ -222,6 +223,7 @@ fit3 <- stan_glmer(log(educ_spending) ~ r_unified_control +
                      under19_pop_prct + 
                      white_pop_prct + 
                      income_adj + 
+                     unemployment_rate + 
                      (1 | State) + 
                      (1 | Year),
                    data = merged_data,
@@ -233,32 +235,32 @@ print(fit3, digits = 3)
 
 ```{r}
 
-# fit1_tidy <- tidy(fit1)
-# fit1_tidy_rounded <- fit1_tidy  %>%
-#   mutate(across(where(is.numeric), 
-#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
-#   mutate(across(where(~!is.numeric(.)), 
-#                 ~ifelse(is.na(.), "-", as.character(.))))
-# fit1_kable <- knitr::kable(fit1_tidy_rounded, caption = "Model 1 Results") %>% kable_classic()
-# save_kable(fit1_kable, file = "fit1table.png")
-# 
-# fit2_tidy <- tidy(fit2)
-# fit2_tidy_rounded <- fit2_tidy %>%
-#   mutate(across(where(is.numeric), 
-#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
-#   mutate(across(where(~!is.numeric(.)), 
-#                 ~ifelse(is.na(.), "-", as.character(.))))
-# fit2_kable <- knitr::kable(fit2_tidy_rounded, caption = "Model 2 Results") %>% kable_classic()
-# save_kable(fit2_kable, file = "fit2table.png")
-# 
-# fit3_tidy <- tidy(fit3)
-# fit3_tidy_rounded <- fit3_tidy %>%
-#   mutate(across(where(is.numeric), 
-#                 ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
-#   mutate(across(where(~!is.numeric(.)), 
-#                 ~ifelse(is.na(.), "-", as.character(.))))
-# fit3_kable <- knitr::kable(fit3_tidy_rounded, caption = "Model 3 Results") %>% kable_classic()
-# save_kable(fit3_kable, file = "fit3table.png")
+fit1_tidy <- tidy(fit1)
+fit1_tidy_rounded <- fit1_tidy  %>%
+  mutate(across(where(is.numeric),
+                ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+  mutate(across(where(~!is.numeric(.)),
+                ~ifelse(is.na(.), "-", as.character(.))))
+fit1_kable <- knitr::kable(fit1_tidy_rounded, caption = "Model 1 Results") %>% kable_classic()
+save_kable(fit1_kable, file = "fit1table.png")
+
+fit2_tidy <- tidy(fit2)
+fit2_tidy_rounded <- fit2_tidy %>%
+  mutate(across(where(is.numeric),
+                ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+  mutate(across(where(~!is.numeric(.)),
+                ~ifelse(is.na(.), "-", as.character(.))))
+fit2_kable <- knitr::kable(fit2_tidy_rounded, caption = "Model 2 Results") %>% kable_classic()
+save_kable(fit2_kable, file = "fit2table.png")
+
+fit3_tidy <- tidy(fit3)
+fit3_tidy_rounded <- fit3_tidy %>%
+  mutate(across(where(is.numeric),
+                ~ifelse(is.na(.), "-", format(round(., 3), nsmall = 3)))) %>%
+  mutate(across(where(~!is.numeric(.)),
+                ~ifelse(is.na(.), "-", as.character(.))))
+fit3_kable <- knitr::kable(fit3_tidy_rounded, caption = "Model 3 Results") %>% kable_classic()
+save_kable(fit3_kable, file = "fit3table.png")
 
 ```
 

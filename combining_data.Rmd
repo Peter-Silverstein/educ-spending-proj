@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(tidyverse)
 path <- "data/processed data/individual"
 ```
 
@@ -31,6 +32,13 @@ income_df
 ```{r}
 educ_pol_df <- read.csv(file.path(path, "educ_pol_df.csv"))
 educ_pol_df
+
+```
+
+### Unemployment
+```{r}
+unemployment_df <- read.csv(file.path(path, "unemployment.csv"))
+unemployment_df
 
 ```
 
@@ -56,6 +64,11 @@ unique(income_df$State)
 unique(educ_pol_df$State)
 ```
 
+**Unemployment**
+```{r}
+unique(unemployment_df$State)
+```
+
 Since DC is not represented in the education and politics variable, we will have to omit DC from demographics and income.
 
 ### Examining Years
@@ -76,6 +89,11 @@ unique(income_df$Year)
 **Education and Politics**
 ```{r}
 unique(educ_pol_df$Year)
+```
+
+**Unemployment**
+```{r}
+unique(unemployment_df$Year)
 ```
 
 We need to get rid of 1990 through 1996 and 2014 and beyond in demographics.
@@ -112,6 +130,18 @@ unique(demographics_df$Year)
 
 ```
 
+### Removing Unecessary Years from Unemployment 
+
+```{r}
+unemployment_df <- unemployment_df %>%
+  filter(!(Year %in% 1990:1996 | Year %in% 2014:2019))
+```
+
+```{r}
+unique(unemployment_df$Year)
+
+```
+
 ### Merging Dataframes 
 
 ```{r}
@@ -124,6 +154,13 @@ merged_df
 ```{r}
 merged_df <- merged_df %>%
   inner_join(educ_pol_df, by = c("State", "Year"))
+
+merged_df
+```
+
+```{r}
+merged_df <- merged_df %>%
+  inner_join(unemployment_df, by = c("State", "Year"))
 
 merged_df
 ```
