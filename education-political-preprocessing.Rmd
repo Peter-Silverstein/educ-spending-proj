@@ -1,5 +1,5 @@
 ---
-title: "data-management"
+title: "education-political-preprocesing"
 author: "Peter Silverstein"
 date: "`r Sys.Date()`"
 output: html_document
@@ -14,6 +14,7 @@ library(dplyr)
 library(here)
 ```
 
+## Loading and Processing Education and State Political Variables
 ```{r}
 # Load data
 educ_spending <- read.csv(here("data/raw-data","k12_educ_realperch.csv")) %>%
@@ -33,6 +34,8 @@ senate <- read.csv(here("data/raw-data","senates_ballotpedia.csv")) %>%
 names(senate) <- sub("^X", "", names(senate))
 ```
 
+
+## Transforming and Combining Education and Political Datasets
 ```{r}
 # Pivot_longer
 educ_longer <- educ_spending %>%
@@ -96,44 +99,44 @@ data <- data_pre %>%
   )
 ```
 
+## Final Data Preparation
 ```{r}
-data
+
+# Changing data to educ_pol_df (Education and Political Variables Dataframe)
+educ_pol_df <- data
+
 ```
 
 ### Changing state to its abbreviations
 ```{r}
+
 state_abbreviations <- setNames(state.abb, state.name)
 
-data <- data %>%
-  # Step 1: Convert state names to abbreviations
+educ_pol_df <- educ_pol_df %>%
+  # Convert state names to abbreviations
   mutate(state = state_abbreviations[state]) 
 
-data
+head(educ_pol_df)
 ```
 
 ```{r}
-names(data)[names(data) == "state"] <- "State"
-names(data)[names(data) == "year"] <- "Year"
-data
+# Changing state and year to uppercase
+names(educ_pol_df)[names(educ_pol_df) == "state"] <- "State"
+names(educ_pol_df)[names(educ_pol_df) == "year"] <- "Year"
+head(educ_pol_df)
 ```
 
 ### Sorting
 ```{r}
-data <- data %>%
+
+educ_pol_df <- educ_pol_df %>%
   arrange(State, Year)
 
-data
+head(educ_pol_df)
 
 ```
 
 ### Exporting
-
-```{r}
-educ_pol_df <- data
-educ_pol_df
-```
-
-
 ```{r}
 
 write.csv(educ_pol_df, "data/processed data/individual/educ_pol_df.csv", row.names = FALSE)

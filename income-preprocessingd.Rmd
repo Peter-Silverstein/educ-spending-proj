@@ -180,8 +180,6 @@ income_df
 
 
 
-
-
 ```{r}
 write.csv(income_df, "data/processed data/individual/income_df.csv", row.names = FALSE)
 

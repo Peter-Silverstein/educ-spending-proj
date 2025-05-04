@@ -35,13 +35,6 @@ racepop_data <- read_csv(file.path(path, "cdc_racepop_estimates_1990_2019.csv"))
 head(racepop_data)
 ```
 
-### Ethnicity Data
-
-```{r}
-ethpop_data <- read_csv(file.path(path, "cdc_ethpop_estimates_1990_2019.csv"))
-head(ethpop_data)
-```
-
 ## Preprocessing Functions
 
 ```{r}
@@ -101,7 +94,8 @@ https://rlang.r-lib.org/reference/dot-data.html
 https://dplyr.tidyverse.org/reference/mutate.html
 
 ```{r}
-
+# This function reshapes a DataFrame from long to wide format
+# Sums the population within each group and spreading categories into columns
 reshape_to_wide <- function(df, names_from_col) {
   df %>%
     dplyr::group_by(State, `State Code`, Year, .data[[names_from_col]]) %>%
@@ -132,14 +126,6 @@ head(agepop_data, 25)
 racepop_data <- fill_total_note(racepop_data, "Race")
 head(racepop_data, 25)
 ```
-
-
-**Ethnicity Data**
-```{r}
-ethpop_data <- fill_total_note(ethpop_data, "Ethnicity")
-head(ethpop_data, 25)
-```
-
 
 
 ### Dropping Unecessary Columns
@@ -199,12 +185,6 @@ racepop_data <- rename_year_column(racepop_data)
 head(racepop_data)
 ```
 
-**Ethnicity Data**
-```{r}
-ethpop_data <- rename_year_column(ethpop_data)
-head(ethpop_data)
-```
-
 ```{r}
 colnames(agepop_data)
 ```
@@ -224,10 +204,6 @@ racepop_wide <- reshape_to_wide(racepop_data, "Race")
 head(racepop_wide)
 ```
 
-
-```{r}
-racepop_wide
-```
 
 ### Dropping Columns 
 
