@@ -38,7 +38,7 @@ merged_data <- merged_data %>%
   )
 ```
 
-# Visualizations
+# Unified Party Control of State Government Per Year
 ```{r}
 percbyyear <- merged_data %>%
   group_by(Year) %>%
@@ -54,7 +54,7 @@ control_byyear_plot <- ggplot(data = percbyyear, aes(x = Year,
   geom_line(lwd = 2) + 
   scale_color_manual(values = c("Democrat" = "blue", "Republican" = "red")) + 
   #theme_minimal() + 
-  labs(title = "Figure 1: Proportion of Unified Party Control of State Government Per year") + 
+  labs(title = "Figure 1: Proportion of Unified Party Control of State Government Per Year") + 
   scale_x_continuous(
     breaks = c(1997, 2001, 2005, 2009, 2013), 
     labels = c("1997", "2001", "2005", "2009", "2013")
@@ -65,9 +65,9 @@ control_byyear_plot
 
 ```{r}
 
-#ggsave("figures/Figure_1.png", 
-#       plot = control_byyear_plot, 
-#       width = 8, height = 6)
+ggsave("figures/Figure_1.png", 
+       plot = control_byyear_plot, 
+       width = 8, height = 6)
 
 ```
 
@@ -90,20 +90,7 @@ mean_educ_spending_by_year <- merged_data %>%
 mean_educ_spending_by_year
 ```
 
-```{r}
 
-Figure_2 <- ggplot(mean_educ_spending_by_year, aes(x = Year, y = mean_educ_spending)) +
-  geom_line(color = "blue") +
-  geom_point(color = "blue") +
-  labs(
-    title = "Figure 2: Mean Education Spending by Year (2016 USD)",
-    x = "Year",
-    y = "Mean Education Spending",
-  )
-
-Figure_2
-
-```
 
 ```{r}
 
@@ -132,47 +119,27 @@ mean_educ_spending_by_state
 
 ```
 
-```{r}
-Figure_3 <- ggplot(mean_educ_spending_by_state, aes(x = State, y = mean_educ_spending)) +
-  geom_col(fill = "blue") +
-  labs(
-    title = "Figure 3: Mean Education Spending Per Pupil by State (2016 USD) ",
-    x = "State",
-    y = "Mean Education Spending Per Pupul"
-  ) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-Figure_3
-
-```
-
-```{r}
-#ggsave("figures/Figure_3.png", 
-#       plot = Figure_3, 
-#       width = 8, height = 6)
-
-```
 
 
 ```{r}
 
-Figure_4 <- ggplot(mean_educ_spending_by_state, aes(x = mean_r_unified_control, y = mean_educ_spending, label = State)) +
+Figure_2 <- ggplot(mean_educ_spending_by_state, aes(x = mean_r_unified_control, y = mean_educ_spending, label = State)) +
   geom_text(color = "black", size = 3) +
   labs(
-    title = "Figure 4: Mean Education Spending Per Pupil vs Republican Unified Control by State",
+    title = "Figure 2: Mean Education Spending Per Pupil vs Republican Unified Control by State",
     x = "Mean Republican Unified Control",
     y = "Mean Education Spending (2016 USD)"
   )
 
-Figure_4
+Figure_2
 
 ```
 
 ```{r}
 
-#ggsave("figures/Figure_4.png", 
-#       plot = Figure_4, 
-#       width = 8, height = 6)
+ggsave("figures/Figure_2.png", 
+       plot = Figure_2, 
+       width = 8, height = 6)
 
 ```
 
