@@ -10,14 +10,17 @@ The goal of our project is to understand how state-level education spending is i
 
 Our `data` folder is organized as follows
 
-  - `raw-data`: contains csv files for age and race data collected from [CDC WONDER: Multiple Cause of Death Data](https://wonder.cdc.gov/controller/datarequest/D163;jsessionid=1D7CE2ADACAB76D41155872A592E) (`demographics` folder) and income data from [U.S. Census: Historical Income Tables for Households](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html) (`income` folder)
+  - `raw-data`: contains csv files for age and race data collected from [CDC WONDER: Multiple Cause of Death Data](https://wonder.cdc.gov/controller/datarequest/D163;jsessionid=1D7CE2ADACAB76D41155872A592E) (`demographics` folder), income data from [U.S. Census: Historical Income Tables for Households](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html) (`income` folder), 
   - `processed/individual`: contains processed csv files for demographics, education spending and state assembly information, income, and unemployment
-  - `processed/merged`: contains merged data used for the multilevel analysis
+  - `processed/merged`: contains merged data used for the multilevel analysis 
 
  **R Files**
 
- - `demographic-preprocessing.Rmd` contains demographic preprocessing
- - 
+ - `demographic-preprocessing.Rmd` preprecesses race and age data
+ - `income-preprocessingd.Rmd` preprocesses median household income data
+ - `education-political-preprocessing.Rmd` preprocesses education and state political variables
+ - `merging-data.Rmd` merges demographic, income, and education data for modeling
+ - `educ-multilevel-models.Rmd` is our primary script for developing summary statistics and figures and running our multilevel models
 
 
 
