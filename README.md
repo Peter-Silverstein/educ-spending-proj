@@ -10,7 +10,7 @@ The goal of our project is to understand how state-level education spending is i
 
 Our `data` folder is organized as follows
 
-  - `raw-data`: contains csv files for age and race data collected from [CDC WONDER: Multiple Cause of Death Data](https://wonder.cdc.gov/controller/datarequest/D163;jsessionid=1D7CE2ADACAB76D41155872A592E) (`demographics` folder), income data from [U.S. Census: Historical Income Tables for Households](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html) (`income` folder), 
+  - `raw-data`: contains csv files for age and race data collected from [CDC WONDER: Multiple Cause of Death Data](https://wonder.cdc.gov/controller/datarequest/D163;jsessionid=1D7CE2ADACAB76D41155872A592E) (`demographics` folder), income data from [U.S. Census: Historical Income Tables for Households](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html) (`income` folder), education spending data from [Urban Institute](https://datacatalog.urban.org/dataset/state-state-spending-kids-dataset), and state assembly data from [Ballotpedia](https://ballotpedia.org/Ballotpedia:Who_Runs_the_States,_Partisanship_Results,_Partisan_Control_of_State_Legislatures).
   - `processed/individual`: contains processed csv files for demographics, education spending and state assembly information, income, and unemployment
   - `processed/merged`: contains merged data used for the multilevel analysis 
 
