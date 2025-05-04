@@ -23,9 +23,3 @@ Our `data` folder is organized as follows
  - `educ-multilevel-models.Rmd` is our primary script for developing summary statistics and figures and running our multilevel models
 
 
-
-### Sources
-
-https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html
-
-https://wonder.cdc.gov/controller/datarequest/D163;jsessionid=1D7CE2ADACAB76D41155872A592E
